@@ -214,10 +214,7 @@ section.your-active-class .landing__container::after {
     opacity: 1;
     animation: rotate 5s linear 0s infinite forwards reverse;
 }
-.active{
-background-color: #333;
-color: white;
-}
+
 /* Section Active Styles Keyframe Animations */
 @keyframes rotate {
 	from {
@@ -236,4 +233,26 @@ color: white;
     font-size: 3vw;
 }
 
+}
+.active{
+background-color: #333;
+
+}
+.to-top-btn{
+    position: fixed;
+    display: none;
+    bottom: 20px;
+    right: 20px;
+    background-color: #cc1;
+    border-radius: 50%;
+    transition: 1000ms;
+}
+.to-top-btn:hover{
+    background-color: rgb(175, 175, 16);
+    cursor: pointer;
+}
+.to-top-btn-active{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

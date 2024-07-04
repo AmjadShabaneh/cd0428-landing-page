@@ -60,10 +60,14 @@
 // Set sections as active
 
 
+const navbar = document.querySelector('.page__header');
 
+
+//to top button that appears when the user is not on the top of the web page 
+const toTopBtn = document.querySelector(".to-top-btn");
 //get the articles to make nav link for each article 
 const articles = document.querySelectorAll('.article');
-//new document fragment 
+//new document fragment to avoid reflows and repaints 
 const navLinks = document.createDocumentFragment();
 // this loop is creating a new link for each article and set the data-nav attribute 
 for(i=0;i<articles.length;i++){
@@ -89,44 +93,52 @@ menuLinks.forEach((link)=>{
         });
      });
      
-// function to detect the active article and update the active link
-function updateActiveLink() {
-  let activeArticle = null;
 
-  articles.forEach(article => {
-      const rect = article.getBoundingClientRect();
-      // Check if the article is in the viewport
-      if (rect.top < window.innerHeight-500 && rect.bottom >= 0) {
-          activeArticle = article;
-      }
-  });
+//function to highlight the Active link to make user knows where is he right now 
+function checkActiveLink(){
+    let activeLink = null;
+    articles.forEach(article => {
+        const rect = article.getBoundingClientRect();
+        if(rect.top< window.innerHeight-500 && rect.bottom>=0){
+            activeLink = article;
+        }
+    
+        if(activeLink){
+            const navValue = activeLink.getAttribute("data-nav");
+            menuLinks.forEach(link => {
+                if(link.getAttribute("data-nav")===navValue){
+                    link.classList.add("active");
+                }else{
+                    link.classList.remove("active");
+                }
+             });
 
-  if (activeArticle) {
-      const navValue = activeArticle.getAttribute("data-nav");
-      menuLinks.forEach(link => {
-          if (link.getAttribute("data-nav") === navValue) {
-              link.classList.add("active");
-          } else {
-              link.classList.remove("active");
-          }
-      });
-  }
+        }
+    });
+
 }
 
-const navbar = document.querySelector('.page__header');
+
+
+
+
 let isScrolling;
 // function to show the navbar
 function showNavbar() {
     navbar.style.display = 'block';
 }
-// Function to hide the navbar
+
+
+// function to hide the navbar
 function hideNavbar() {
     navbar.style.display = 'none';
 }
+
+
 // show the navbar on initial page load
 showNavbar();
 
-// Event listener for scroll event to update active link
+// event listner to update the active link 
 window.addEventListener('scroll', function(){
     showNavbar();
     clearTimeout(isScrolling);
@@ -134,7 +146,21 @@ window.addEventListener('scroll', function(){
     isScrolling = setTimeout(() => {
         hideNavbar();
     }, 1000); 
-    updateActiveLink();
+    checkActiveLink();
+    if (window.scrollY > 100) {
+        toTopBtn.classList.add("to-top-btn-active");
+      } else {
+        toTopBtn.classList.remove("to-top-btn-active");
+      }
 });
 
-// select the navbar element
+
+
+//diappears when the view is on the top of the page 
+toTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+        top: 0,
+        behavior:'smooth'
+        });
+     });
+        
